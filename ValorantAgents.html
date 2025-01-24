@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- App for Searching Game(Valorant) Characters Abilities and Description By Justin Martinez-Garcia -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <img src="Val_Logo.png">
+    <title src="Val_Logo.png"> Valorant Agents </title>
+    <link rel="icon" type="image/x-icon" href="Val_Logo.png">
+    <style>
+      img{
+        height: 100px;
+        float: none;
+      }
+      table, tr:nth-child(odd) {
+        background-color: #74acac;
+      }       
+    table, tr:nth-child(even) { 
+        background-color: #D6EEEE;
+      }
+    
+    </style>
+    <script>
+           const getJSON = function(url, callback) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('get', url, true);
+                xhr.responseType = 'json';
+                xhr.onload = function() {
+                  let status = xhr.status;
+                  if (status == 200) {
+                    callback(null, xhr.response);
+                  } else {
+                    callback(status);
+                  }
+                };
+                xhr.send();
+            };
+            
+            getJSON('https://valorant-api.com/v1/agents', function(err, info) {
+                var daInfo = info.data; //main array list of info
+               
+              if (err != null) {
+                alert('Something went wrong: ' + err);
+              } 
+
+                
+            //loop for creating table is below
+            for (var a=0; a < daInfo.length; ++a) {
+              if(daInfo[a].isPlayableCharacter == true){
+                var table1 = document.getElementById('x');
+                var rowrow =  document.createElement('tr');
+                var cell0 = document.createElement('td');
+                var img = document.createElement('img');
+                var name = document.createTextNode(daInfo[a].displayName);
+                img.src = daInfo[a].displayIcon;
+                infoAgent = daInfo[a].displayName
+                cell0.append(img);
+                cell0.appendChild(name)
+                rowrow.appendChild(cell0);
+              for(var i=0; i <daInfo[a].abilities.length;i++){
+                var cell1  =  document.createElement('td');
+                var character = daInfo[a].abilities;
+                var abilityImg = document.createElement('img');
+                var bold = document.createElement('b')
+                abilityImg.src = daInfo[a].abilities[i].displayIcon;
+                var abilities = document.createTextNode(daInfo[a].abilities[i].displayName);
+                var abilityDescription = document.createTextNode(daInfo[a].abilities[i].description);
+                    cell1.append(abilityImg);
+                    bold.append(abilities)
+                    cell1.append(bold);
+                    cell1.append(abilityDescription);
+                    rowrow.appendChild(cell1);                
+              }
+               }
+                table1.appendChild(rowrow);
+            }                       
+            }
+              );
+          
+    
+            
+      </script>
+</head>
+<body>
+     <h1>Search Valorant Agents</h1>
+     <span id="data"></span>
+     <table id = "x" style="width: 100%; height: 100%;">
+     </table>
+
+
+</body>
+
+</html>
